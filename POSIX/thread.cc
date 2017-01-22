@@ -2,23 +2,22 @@
 
 
 Thread::Thread(runable r) {
-  mPthread_t = new pthread_t();
   this->mRunable = r;
 }
 
 Thread::~Thread() {
-  delete this->mPthread_t;
-}
-
-void Thread::start() {
-  pthread_create(mPthread_t, NULL, this->mRunable, NULL);
-}
-
-void Thread::stop() {
 
 }
 
+bool Thread::start() {
+  pthread_t pth;
+  return pthread_create(&pth, NULL, this->mRunable, NULL);
+}
 
-pthread_t *Thread::getThreadID() {
-  return this->mPthread_t;
+int Thread::stop() {
+  return pthread_cancel(pthread_self());
+}
+
+pthread_t Thread::getThreadID() {
+  return pthread_self();
 }
